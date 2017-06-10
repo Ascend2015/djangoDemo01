@@ -1,9 +1,11 @@
 # coding: utf-8
 # Create your models here.
 from django.db import models
+from django.utils.six import python_2_unicode_compatible
 from django.contrib.auth.models import User
+from django.urls import reverse
 
-
+@python_2_unicode_compatible
 class Category(models.Model):
     """
     Django 要求模型必须继承 models.Model 类。
@@ -68,3 +70,10 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
+        # 自定义 get_absolute_url 方法
+        # 记得从 django.urls 中导入 reverse 函数
+    def get_absolute_url(self):
+        return reverse('blog:detail', kwargs={'pk': self.pk})
+
+    class Meta:
+        ordering = ['-created_time']
